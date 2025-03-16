@@ -15,7 +15,12 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: "https://coupon-frontend-green.vercel.app/",
+    credentials: true,
+  })
+);
 app.use("/api", CouponRouter);
 app.use("/api/admin", adminRouter);
 connectDb();
