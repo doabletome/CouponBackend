@@ -13,12 +13,23 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins = [
+  "http://localhost:5173", // For local testing
+  "https://coupon-frontend-green.vercel.app", // Your deployed frontend URL
+];
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://coupon-frontend-green.vercel.app/",
-    credentials: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // Allow cookies & authentication
   })
 );
 app.use("/api", CouponRouter);
